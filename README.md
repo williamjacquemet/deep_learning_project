@@ -16,4 +16,3 @@ The wav files are from [analyticsvidhya](https://datahack.analyticsvidhya.com/co
 
 - download the wav files from : [analytics google drive](https://drive.google.com/drive/folders/0By0bAi7hOBAFUHVXd1JCN3MwTEU)
 - the folder `Train`, `Test` and the excel files `train.csv` and `test.csv` must be in the **_same_** directory that the `urbanNN.py`
-- 

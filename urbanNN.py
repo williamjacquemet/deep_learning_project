@@ -44,8 +44,6 @@ i = random.choice(train.index)
 audio_name = train.ID[i]
 path = os.path.join('./Train', str(audio_name) + '.wav')
 
-"""
-
 
 def parser(row):
    # function to load files and extract features
@@ -54,21 +52,15 @@ def parser(row):
    try:
       # here kaiser_fast is a technique used for faster extraction
       X, sr = librosa.load(file_name, res_type='kaiser_fast') 
-      stdt_amp=np.std(X)
-      mfccs = np.mean(librosa.feature.mfcc(y=X,sr=sr,n_mfcc=20).T,axis=0) #(mfccs,chroma,mel,contrast,tonnetz
-      chroma = np.mean(librosa.feature.chroma_stft(y=X, sr=sr).T,axis=0)
-      mel = np.mean(librosa.feature.melspectrogram(X, sr=sr).T,axis=0)
-      contrast = np.mean(librosa.feature.spectral_contrast(y=X, sr=sr).T,axis=0)
-      tonnetz = np.mean(librosa.feature.tonnetz(y=X, sr=sr).T,axis=0)
+
       
       
-      
-      #mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sr, n_mfcc=40).T,axis=0) 
+      mfccs = np.mean(librosa.feature.mfcc(y=X, sr=sr, n_mfcc=40).T,axis=0) 
    except Exception as e:
-      print("Error encountered while parsing file: ", file)
+      print("Error encountered while parsing file: ", file_name)
       return None, None
-   feature = np.hstack(([stdt_amp],mfccs,chroma,mel,contrast,tonnetz))
-   #feature = mfccs
+   
+   feature = mfccs
    label = row.Class
  
    return pd.Series([feature, label])
@@ -88,7 +80,7 @@ with open('temptotx.pickle', 'wb') as handle:
         
 with open('temptoty.pickle', 'wb') as handle:
      pickle.dump(y, handle, protocol=pickle.HIGHEST_PROTOCOL)
-"""
+
 with open('tempx.pickle','rb') as handle:
      X=pickle.load(handle)
 with open('tempy.pickle','rb') as handle:
@@ -129,29 +121,18 @@ plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 
 
-"""
 def parser_test(row):
    # function to load files and extract features
    file_name = os.path.join('./Test', str(row.ID) + '.wav')
-   print(file_name)
    # handle exception to check if there isn't a file which is corrupted
    try:
      
       # here kaiser_fast is a technique used for faster extraction
       X_test, sr = librosa.load(file_name, res_type='kaiser_fast') 
-      
-      stdt_amp=np.std(X)
-      mfccs = np.mean(librosa.feature.mfcc(y=X_test,sr=sr,n_mfcc=20).T,axis=0) #(mfccs,chroma,mel,contrast,tonnetz
-      chroma = np.mean(librosa.feature.chroma_stft(y=X_test, sr=sr).T,axis=0)
-      mel = np.mean(librosa.feature.melspectrogram(X_test, sr=sr).T,axis=0)
-      contrast = np.mean(librosa.feature.spectral_contrast(y=X_test, sr=sr).T,axis=0)
-      tonnetz = np.mean(librosa.feature.tonnetz(y=X_test, sr=sr).T,axis=0)
-      
-      
-      
+
       mfccs = np.mean(librosa.feature.mfcc(y=X_test, sr=sr, n_mfcc=40).T,axis=0) 
    except Exception as e:
-      print("Error encountered while parsing file: ", file)
+      print("Error encountered while parsing file: ", file_name)
       return None, None
    #feature = np.hstack(([stdt_amp],mfccs,chroma,mel,contrast,tonnetz))
    feature = mfccs
@@ -174,17 +155,17 @@ with open('temptestmfcx.pickle', 'wb') as handle:
         
 with open('temptestmfcy.pickle', 'wb') as handle:
      pickle.dump(test_feature, handle, protocol=pickle.HIGHEST_PROTOCOL)
-"""
+
 with open('temptestmfcx.pickle','rb') as handle:
      test_ID=pickle.load(handle)
 with open('temptestmfcy.pickle','rb') as handle:
      test_feature=pickle.load(handle)
-"""
+
 mn=np.mean( test_feature ,axis=0)
 test_feature-=mn
 sd=np.std( test_feature ,axis=0)
 test_feature/=sd
-"""
+
 result=model.predict(test_feature,verbose=1)
 result=result.argmax(axis=-1)
 d={
@@ -209,4 +190,4 @@ data ={'Class': resultL,
 
 temp3 = pd.DataFrame(data=data)
 
-temp3.to_csv('/home/william/Documents/DNN/result.csv',index=False)
+temp3.to_csv('result.csv',index=False)

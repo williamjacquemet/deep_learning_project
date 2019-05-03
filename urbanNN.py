@@ -44,7 +44,7 @@ i = random.choice(train.index)
 audio_name = train.ID[i]
 path = os.path.join('./Train', str(audio_name) + '.wav')
 
-
+"""
 def parser(row):
    # function to load files and extract features
    file_name = os.path.join('./Train', str(row.ID) + '.wav')
@@ -73,14 +73,12 @@ lb = LabelEncoder()
 print(X.shape,"X")
 y = np_utils.to_categorical(lb.fit_transform(y)) # to use crossentropy loss fct
 
-
-
 with open('temptotx.pickle', 'wb') as handle:
      pickle.dump(X, handle, protocol=pickle.HIGHEST_PROTOCOL)
         
 with open('temptoty.pickle', 'wb') as handle:
      pickle.dump(y, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+"""
 with open('tempx.pickle','rb') as handle:
      X=pickle.load(handle)
 with open('tempy.pickle','rb') as handle:
@@ -107,7 +105,7 @@ model.add(Activation('relu'))
 
 model.add(Dense(num_labels))
 model.add(Activation('sigmoid'))
-model.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')#categorical_crossentropy: basic, binary :98.2
+model.compile(loss='binary_crossentropy', metrics=['accuracy'], optimizer='adam')#categorical_crossentropy: basic, binary : better results, adam better results than SGD for lower eopch
 callback=keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=15, verbose=0, mode='auto', baseline=None, restore_best_weights=False)
 
 print(model.summary())
@@ -120,7 +118,7 @@ plt.xlabel('epoch')
 plt.legend(['train', 'validation'], loc='upper left')
 plt.show()
 
-
+"""
 def parser_test(row):
    # function to load files and extract features
    file_name = os.path.join('./Test', str(row.ID) + '.wav')
@@ -155,16 +153,16 @@ with open('temptestmfcx.pickle', 'wb') as handle:
         
 with open('temptestmfcy.pickle', 'wb') as handle:
      pickle.dump(test_feature, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
+"""
 with open('temptestmfcx.pickle','rb') as handle:
      test_ID=pickle.load(handle)
 with open('temptestmfcy.pickle','rb') as handle:
      test_feature=pickle.load(handle)
 
-mn=np.mean( test_feature ,axis=0)
-test_feature-=mn
-sd=np.std( test_feature ,axis=0)
-test_feature/=sd
+#mn=np.mean( test_feature ,axis=0)
+#test_feature-=mn
+#sd=np.std( test_feature ,axis=0)
+#test_feature/=sd
 
 result=model.predict(test_feature,verbose=1)
 result=result.argmax(axis=-1)

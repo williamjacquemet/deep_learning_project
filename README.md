@@ -17,7 +17,7 @@ _LSTM.py_ is the recurrent neural network
 
   you can access it with `./dowload_data.sh`
 
-- **All the Data is stored on my samba server, that is where the scypt are taking the Data**
+- **All the Data is stored on my samba server, that is where the scripts are taking the Data**
 
 - If you have some issues with `CuDNNLSTM` layer just replace it by `LSTM` 
 
